@@ -43,8 +43,9 @@ export default function TaskForm({ onSubmit, onUpdate, tasks, editTaskId }) {
         onChange={(e) => setDescription(e.target.value)}
         placeholder="Descripción"
         rows={3}
-        className="w-full mb-4 p-3 rounded bg-[#222] border border-[#00f7ff] text-[#00f7ff] focus:border-[#ff00ff] focus:shadow-lg"
+        className="w-full mb-4 p-3 rounded bg-[#222] border border-[#00f7ff] text-[#00f7ff] focus:outline-none focus:ring-2 focus:ring-[#ff00ff] transition-shadow"
       />
+
       <button
         type="submit"
         className="w-full bg-[#111] border border-[#ff00ff] text-[#ff00ff] px-4 py-2 rounded shadow-md hover:bg-[#222] hover:text-[#39ff14] hover:border-[#39ff14] transition-all"

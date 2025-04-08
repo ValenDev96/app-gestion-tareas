@@ -8,26 +8,26 @@ export default function TaskList({ tasks, onEdit, onDelete }) {
       {tasks.map((task) => (
         <div
           key={task.id}
-          className="bg-[#141414] p-5 rounded-2xl shadow-lg border border-[#00f7ff] text-white hover:scale-105 transition-all relative"
+          className="bg-[#1a1a1a] p-5 rounded-xl border-2 border-[#39ff14] shadow-lg transition-transform duration-300 hover:rotate-[-1deg] hover:scale-[1.02]"
           style={{
-            boxShadow: "0px 0px 20px rgba(0, 247, 255, 0.5)",
-            transform: "rotate(-1deg)",
+            boxShadow:
+              "0px 2px 10px rgba(57, 255, 20, 0.4), 0px 0px 20px rgba(0, 247, 255, 0.2)",
           }}
         >
-          <h3 className="text-xl font-bold text-[#39ff14] mb-2">
+          <h3 className="text-lg font-bold text-[#39ff14] mb-2">
             {task.title}
           </h3>
-          <p className="text-[#ccc] mb-4">{task.description}</p>
+          <p className="text-sm text-[#ccc] mb-4">{task.description}</p>
           <div className="flex justify-between gap-2">
             <button
               onClick={() => onEdit(task.id)}
-              className="text-sm border border-[#ff00ff] text-[#ff00ff] px-3 py-1 rounded hover:text-[#39ff14] hover:border-[#39ff14] transition-all"
+              className="text-xs border border-[#ff00ff] text-[#ff00ff] px-3 py-1 rounded hover:text-[#39ff14] hover:border-[#39ff14] transition-all"
             >
               Editar
             </button>
             <button
               onClick={() => onDelete(task.id)}
-              className="text-sm border border-red-500 text-red-500 px-3 py-1 rounded hover:bg-red-500 hover:text-white transition-all"
+              className="text-xs border border-red-500 text-red-500 px-3 py-1 rounded hover:bg-red-500 hover:text-white transition-all"
             >
               Eliminar
             </button>
@@ -36,4 +36,4 @@ export default function TaskList({ tasks, onEdit, onDelete }) {
       ))}
     </div>
   );
-}
+}  
