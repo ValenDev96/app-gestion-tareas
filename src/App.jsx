@@ -1,74 +1,55 @@
-// src/App.jsx
-import { useState, useEffect } from 'react';
-import TaskForm from './components/TaskForm/TaskForm';
-import TaskList from './components/TaskList/TaskList';
-import TaskFilter from './components/TaskFilter/TaskFilter';
-import TaskStats from './components/TaskStats/TaskStats';
+import { useState } from "react";
+import TaskList from "./components/TaskList/TaskList";
+import TaskForm from "./components/TaskForm/TaskForm";
 
-const App = () => {
-  // Cargar las tareas desde localStorage al iniciar la aplicación
-  const loadTasksFromLocalStorage = () => {
-    const savedTasks = localStorage.getItem('tasks');
-    return savedTasks ? JSON.parse(savedTasks) : [];
-  };
+export default function App() {
+  const [tasks, setTasks] = useState([]);
+  const [editTaskId, setEditTaskId] = useState(null);
 
-  const [tasks, setTasks] = useState(loadTasksFromLocalStorage());
-  const [taskToEdit, setTaskToEdit] = useState(null);
-  const [filter, setFilter] = useState('all'); // 'all', 'active', 'completed'
-
-  // Guardar las tareas en localStorage cada vez que cambian
-  useEffect(() => {
-    localStorage.setItem('tasks', JSON.stringify(tasks));
-  }, [tasks]);
-
-  const addTask = (text) => {
+  const addTask = (title, description) => {
     const newTask = {
       id: Date.now(),
-      text,
-      completed: false,
+      title,
+      description,
     };
     setTasks([...tasks, newTask]);
   };
 
-  const editTask = (id, newText) => {
-    const updatedTasks = tasks.map((task) =>
-      task.id === id ? { ...task, text: newText } : task
+  const updateTask = (id, updatedTitle, updatedDescription) => {
+    setTasks(
+      tasks.map((task) =>
+        task.id === id
+          ? { ...task, title: updatedTitle, description: updatedDescription }
+          : task
+      )
     );
-    setTasks(updatedTasks);
-    setTaskToEdit(null);
+    setEditTaskId(null);
   };
 
   const deleteTask = (id) => {
     setTasks(tasks.filter((task) => task.id !== id));
   };
 
-  const toggleTaskCompletion = (id) => {
-    const updatedTasks = tasks.map((task) =>
-      task.id === id ? { ...task, completed: !task.completed } : task
-    );
-    setTasks(updatedTasks);
+  const startEditTask = (id) => {
+    setEditTaskId(id);
   };
 
-  const filteredTasks = tasks.filter((task) => {
-    if (filter === 'active') return !task.completed;
-    if (filter === 'completed') return task.completed;
-    return true; // 'all'
-  });
-
   return (
-    <div className="app">
-      <h1 className="text-2xl font-bold text-center">Gestión de Tareas</h1>
-      <TaskForm addTask={addTask} editTask={editTask} taskToEdit={taskToEdit} />
-      <TaskStats tasks={tasks} />
-      <TaskFilter setFilter={setFilter} currentFilter={filter} />
+    <div className="min-h-screen bg-black text-[#39ff14] flex flex-col items-center py-10 px-4">
+      <h1 className="text-4xl font-bold mb-6 text-[#00f7ff] text-shadow-neon">
+        Neon Task Manager
+      </h1>
+      <TaskForm
+        onSubmit={addTask}
+        onUpdate={updateTask}
+        tasks={tasks}
+        editTaskId={editTaskId}
+      />
       <TaskList
-        tasks={filteredTasks}
-        editTask={setTaskToEdit}
-        deleteTask={deleteTask}
-        toggleTaskCompletion={toggleTaskCompletion}
+        tasks={tasks}
+        onEdit={startEditTask}
+        onDelete={deleteTask}
       />
     </div>
   );
-};
-
-export default App;
+}
